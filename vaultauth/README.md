@@ -1,7 +1,6 @@
 # Readme
 
-Generates a hashicorp vault token using a github token taken from the `GITHUB_TOKEN` environment variable.
-Set this via your `.profile` or whichever you feel comfortable with (maybe for good security you don't store you tokens in a bash config.)
+Generates a hashicorp vault token using a github token. The script attempts to use your OS' keyring.
 
 Install via
 ```
