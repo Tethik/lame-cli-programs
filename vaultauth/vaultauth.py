@@ -2,7 +2,6 @@ import os
 import hvac
 import sys
 
-
 def main():
     xargs = {
         'verify': os.getenv('VAULT_CACERT', None),
@@ -15,7 +14,8 @@ def main():
     client = hvac.Client(**xargs)
     try:
         res = client.auth_github(github_token)
-        print(res['auth']['client_token'])
+        token = res['auth']['client_token']
+        print(token)
     except Exception as ex:
         print('Authentication failed.', file=sys.stderr)
         print(ex, file=sys.stderr)
