@@ -4,7 +4,7 @@ Generates a hashicorp vault token using a github token. The script attempts to u
 
 Install via
 ```
-pip3 install --user "git+https://github.com/Tethik/lame-cli-programs#egg=vaultauth&subdirectory=vaultauth"
+pip3 install -U --user "git+https://github.com/Tethik/lame-cli-programs#egg=vaultauth&subdirectory=vaultauth"
 ```
 
 Use via the following to set the `VAULT_TOKEN` environment variable.
