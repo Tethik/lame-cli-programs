@@ -1,6 +1,8 @@
 import os
 import hvac
 import sys
+import keyring
+import getpass
 
 def main():
     xargs = {
@@ -9,7 +11,11 @@ def main():
         'token': os.getenv('VAULT_TOKEN', None)
     }
 
-    github_token = os.environ['GITHUB_TOKEN']
+    github_token = keyring.get_password("vaultauth", "GITHUB_TOKEN")
+    if not github_token:
+        print('Found no github token in your keyring.')
+        github_token = getpass.getpass('Github Token: ')
+        keyring.set_password("vaultauth", "GITHUB_TOKEN", github_token)
 
     client = hvac.Client(**xargs)
     try:
@@ -22,4 +28,6 @@ def main():
         sys.exit(1)
 
 if __name__ == "__main__":
+    if '--debug' in [a.strip() for a in sys.argv]:
+        print(str(keyring.get_keyring()))
     main()

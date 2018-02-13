@@ -17,6 +17,8 @@ setup(
     package_data={'': ['README.md']},
     include_package_data=True,
     install_requires=[
-        "hvac"
+        "hvac",
+        "keyring",
+        "keyrings.alt"
     ]
 )
