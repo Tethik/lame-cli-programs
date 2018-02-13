@@ -5,9 +5,9 @@ import sys
 
 def main():
     xargs = {
-            'verify': os.getenv('VAULT_CACERT', None),
-            'url': os.getenv('VAULT_ADDR', 'http://127.0.0.1:8200'),
-            'token': os.getenv('VAULT_TOKEN', None)
+        'verify': os.getenv('VAULT_CACERT', None),
+        'url': os.getenv('VAULT_ADDR', 'http://127.0.0.1:8200'),
+        'token': os.getenv('VAULT_TOKEN', None)
     }
 
     github_token = os.environ['GITHUB_TOKEN']
