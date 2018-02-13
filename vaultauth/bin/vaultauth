@@ -1,4 +1,4 @@
 #!/bin/bash
 
-export VAULT_TOKEN=$(vaultauthpy)
+export VAULT_TOKEN=$(vaultauthpy $@)
 echo $VAULT_TOKEN

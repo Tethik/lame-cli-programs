@@ -5,6 +5,9 @@ import keyring
 import getpass
 
 def main():
+    if '--debug' in sys.argv:
+        print(str(keyring.get_keyring()))
+
     xargs = {
         'verify': os.getenv('VAULT_CACERT', None),
         'url': os.getenv('VAULT_ADDR', 'http://127.0.0.1:8200'),
@@ -28,6 +31,4 @@ def main():
         sys.exit(1)
 
 if __name__ == "__main__":
-    if '--debug' in [a.strip() for a in sys.argv]:
-        print(str(keyring.get_keyring()))
     main()
