@@ -6,7 +6,9 @@ import getpass
 
 def main():
     if '--debug' in sys.argv:
-        print(str(keyring.get_keyring()))
+        print("using keyring", str(keyring.get_keyring()))
+        print("github_token", keyring.get_password("vaultauth", "GITHUB_TOKEN"))
+
 
     if '--reset' in sys.argv:
         github_token = getpass.getpass('Github Token: ')
