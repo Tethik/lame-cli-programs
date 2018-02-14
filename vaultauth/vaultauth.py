@@ -8,6 +8,10 @@ def main():
     if '--debug' in sys.argv:
         print(str(keyring.get_keyring()))
 
+    if '--reset' in sys.argv:
+        github_token = getpass.getpass('Github Token: ')
+        keyring.set_password("vaultauth", "GITHUB_TOKEN", github_token)
+
     xargs = {
         'verify': os.getenv('VAULT_CACERT', None),
         'url': os.getenv('VAULT_ADDR', 'http://127.0.0.1:8200'),
