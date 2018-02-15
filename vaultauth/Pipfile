@@ -9,7 +9,6 @@ name = "pypi"
 
 hvac = "*"
 keyring = "*"
-"keyrings.alt" = "*"
 
 
 [dev-packages]
