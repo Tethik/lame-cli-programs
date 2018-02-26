@@ -17,5 +17,6 @@ setup(
     include_package_data=True,
     install_requires=[
         "boto3",
+        "crayons",
     ]
 )
