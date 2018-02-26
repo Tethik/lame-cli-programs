@@ -9,14 +9,15 @@ Configure your EC2 instances via the following tags:
 
 ## Install
 ```
-pip3 install -U --user "git+https://github.com/Tethik/lame-cli-programs#egg=ec2sshgen&subdirectory=ec2sshgen"
+pip3 install -U --user "git+https://github.com/Tethik/lame-cli-programs#egg=ec2sshgen&subdirectory=ec2-ssh-generator"
 ```
 
-## Usage
 Add the following to your `.ssh/config` file.
 ```
 Include aws-hosts-config
 ```
 
+## Usage
 
+Simply run `ec2sshgen` and your a `.ssh/aws-hosts-config` file will be created for you.
 
