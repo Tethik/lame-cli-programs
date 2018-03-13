@@ -39,7 +39,7 @@ def get_bastion(instance):
     val = get_tag_val(instance, 'Bastion')
     if val:
         return f"ProxyJump {val}"
-    return None
+    return ""
 
 
 def main():
