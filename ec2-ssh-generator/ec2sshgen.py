@@ -14,6 +14,7 @@ Host {domain}
 """
 
 DOMAIN_WHITELIST = re.compile(r'[a-zA-Z0-9\-\.]+')
+BOTO3_EC2_RUNNING_STATE = 16
 
 def get_tag_val(instance, key):
     try:
@@ -38,7 +39,7 @@ def get_bastion(instance):
     val = get_tag_val(instance, 'Bastion')
     if val:
         return f"ProxyJump {val}"
-    return ""
+    return None
 
 
 def main():
@@ -46,6 +47,10 @@ def main():
 
     with open(expanduser('~/.ssh/aws-hosts-config'), 'w') as file:
         for i in ec2.instances.all():
+            if i.state["Code"] != BOTO3_EC2_RUNNING_STATE:
+                print(crayons.blue(f'Skipping instance {i.id} because it is not running.'))
+                continue
+
             domain = get_domain(i)
             if not domain:
                 print(crayons.yellow(f'Skipping instance {i.id} because it had an empty or no Domain tag.'))
