@@ -71,6 +71,10 @@ def tag_names(ctx, image_name):
 @click.pass_context
 def build(ctx, image_name, dockerfile=None):
     tags = tag_names(ctx, image_name)
+    if not tags:
+        print("No build needed.")
+        return
+
     if dockerfile:
         dockerfile = f"-f {dockerfile}"
     else:
@@ -85,6 +89,10 @@ def build(ctx, image_name, dockerfile=None):
 @click.pass_context
 def push(ctx, image_name):
     tags = tag_names(ctx, image_name)
+    if not tags:
+        print("No push needed.")
+        return
+
     for tag in tags:
         cmd = f'docker push {tag}'
         print(cmd)
