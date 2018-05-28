@@ -1,0 +1,5 @@
+{
+    "develop": ["latest","develop-{BUILD_NUMBER}","{git_branch}"],
+    "feature-(.+)": ["{git_branch}"],
+    "master": ["{git_branch}","master-{BUILD_NUMBER}","{VERSION}"]
+}
