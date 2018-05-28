@@ -25,7 +25,11 @@ def cli(ctx):
 
     ctx.obj['config'] = json.loads(f.read_text())
     ctx.obj['git_branch'] = git_branch()
-    ctx.obj['git_latest_version_tag'] =  git_latest_version_tag()
+    ctx.obj['git_latest_version_tag'] = 'unknown_version'
+    try:
+        ctx.obj['git_latest_version_tag'] =  git_latest_version_tag()
+    except:
+        pass
 
 
 @cli.command()
@@ -63,10 +67,15 @@ def tag_names(ctx, image_name):
 
 @cli.command()
 @click.argument('image_name')
+@click.option('--dockerfile')
 @click.pass_context
-def build(ctx, image_name):
+def build(ctx, image_name, dockerfile=None):
     tags = tag_names(ctx, image_name)
-    cmd = f'docker build -t {f" -t ".join(tags)} .'
+    if dockerfile:
+        dockerfile = f"-f {dockerfile}"
+    else:
+        dockerfile = ""
+    cmd = f'docker build {dockerfile} -t {f" -t ".join(tags)} .'
     print(cmd)
     os.system(cmd)
 
