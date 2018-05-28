@@ -81,7 +81,8 @@ def build(ctx, image_name, dockerfile=None):
         dockerfile = ""
     cmd = f'docker build {dockerfile} -t {f" -t ".join(tags)} .'
     print(cmd)
-    os.system(cmd)
+    sys.exit(os.system(cmd))
+
 
 
 @cli.command()
@@ -96,7 +97,9 @@ def push(ctx, image_name):
     for tag in tags:
         cmd = f'docker push {tag}'
         print(cmd)
-        os.system(cmd)
+        r = os.system(cmd)
+        if r != 0:
+            sys.exit(r)
 
 
 def main():
