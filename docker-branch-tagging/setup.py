@@ -9,7 +9,7 @@ setup(
     author_email='tethik@gmail.com',
     description='Utility tool to help you give your docker images multiple tags based on the current git branch.',
     url='https://github.com/Tethik/lame-cli-programs',
-    py_modules=['ecs_stop_redundant_tasks'],
+    py_modules=['docker_branch_tagging'],
     entry_points = {
         'console_scripts': ['docker-branch-tagging=docker_branch_tagging:main'],
     },
