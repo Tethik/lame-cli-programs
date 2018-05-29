@@ -24,7 +24,7 @@ Variables are populated directly from the environment variables. There is also t
 
 ### Examples
 ```sh
-docker-branch-taggin build aws-blahabhla.com/example
+docker-branch-tagging build aws-blahabhla.com/example
 > docker build -t aws-blahabhla.com/example:master -t aws-blahabhla.com/example:master-123 -t aws-blahabhla.com/example:0.2.1 .
 ```
 
