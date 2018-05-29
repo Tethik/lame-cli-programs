@@ -7,7 +7,7 @@ pip3 install -U --user "git+https://github.com/Tethik/lame-cli-programs#egg=dock
 
 ## Usage
 
-In your repo define a .docker-branch-tagging file as a json file.
+In your repo define a .docker-branch-tagging file as a json file, or use `docker-branch-tagging init` to generate one.
 ```json
 {
 	"develop": ["latest","develop-{CIRCLE_BUILD_NUM}","{git_branch}"],
