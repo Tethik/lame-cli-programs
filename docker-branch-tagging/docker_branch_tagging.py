@@ -83,7 +83,9 @@ def build(ctx, image_name, dockerfile=None):
     tag_text = " -t ".join(tags)
     cmd = 'docker build {dockerfile} -t {tag_text} .'.format(dockerfile=dockerfile, tag_text=tag_text)
     print(cmd)
-    sys.exit(os.system(cmd))
+    r = os.system(cmd)
+    if r != 0:
+        sys.exit(1)
 
 
 
@@ -101,7 +103,7 @@ def push(ctx, image_name):
         print(cmd)
         r = os.system(cmd)
         if r != 0:
-            sys.exit(r)
+            sys.exit(1)
 
 
 def main():
