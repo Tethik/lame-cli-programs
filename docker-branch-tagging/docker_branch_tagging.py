@@ -35,7 +35,7 @@ def cli(ctx):
 @cli.command()
 def init():
     Path(FILENAME).write_text(TEMPLATE.strip())
-    click.secho(f'Wrote sample {FILENAME} file', color="blue")
+    click.secho('Wrote sample {FILENAME} file'.format(FILENAME=FILENAME), color="blue")
 
 
 def tag_name(template, extras):
@@ -62,7 +62,7 @@ def tag_names(ctx, image_name):
     print(ctx.obj['git_branch'])
     for branch_name_pattern, tags in ctx.obj['config'].items():
         if re.match(branch_name_pattern, ctx.obj['git_branch']):
-            return [f"{image_name}:{tag_name(template, extras)}" for template in tags]
+            return ["{image_name}:{tag_name_text}".format(image_name=image_name, tag_name_text=tag_name(template, extras)) for template in tags]
 
 
 @cli.command()
@@ -76,10 +76,12 @@ def build(ctx, image_name, dockerfile=None):
         return
 
     if dockerfile:
-        dockerfile = f"-f {dockerfile}"
+        dockerfile = "-f {dockerfile}".format(dockerfile=dockerfile)
     else:
         dockerfile = ""
-    cmd = f'docker build {dockerfile} -t {f" -t ".join(tags)} .'
+
+    tag_text = " -t ".join(tags)
+    cmd = 'docker build {dockerfile} -t {tag_text} .'.format(dockerfile=dockerfile, tag_text=tag_text)
     print(cmd)
     sys.exit(os.system(cmd))
 
@@ -95,7 +97,7 @@ def push(ctx, image_name):
         return
 
     for tag in tags:
-        cmd = f'docker push {tag}'
+        cmd = "docker push {tag}".format(tag=tag)
         print(cmd)
         r = os.system(cmd)
         if r != 0:
