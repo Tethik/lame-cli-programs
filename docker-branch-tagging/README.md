@@ -22,9 +22,17 @@ and the values are lists of tag templates as python format strings.
 Variables are populated directly from the environment variables. There is also two special variables:
 `git_branch` (the current branch) and `git_latest_version_tag` (`git describe --abbrev=0 --match=[0-9]*.[0-9]*.[0-9]*`).
 
+### Examples
+```sh
+docker-branch-taggin build aws-blahabhla.com/example
+> docker build -t aws-blahabhla.com/example:master -t aws-blahabhla.com/example:master-123 -t aws-blahabhla.com/example:0.2.1 .
 ```
-docker-branch-tagging build <image_name>
-docker-branch-tagging push <image_name>
+
+```sh
+docker-branch-tagging push aws-blahabhla.com/example
+> docker push aws-blahabhla.com/example:master 
+> docker push aws-blahabhla.com/example:master-123
+> docker push aws-blahabhla.com/example:0.2.1
 ```
 
 
