@@ -1,0 +1,5 @@
+{
+    "develop": ["latest","develop-{CIRCLE_BUILD_NUM}","{git_branch}"],
+    "feature/(.+)": ["{git_branch}"],
+    "master": ["master","master-{CIRCLE_BUILD_NUM}","{git_latest_version_tag}"]
+}
