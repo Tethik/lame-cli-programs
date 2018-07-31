@@ -1,4 +1,4 @@
-from requests_html import session
+from requests_html import HTMLSession
 import requests
 import click
 import shutil
@@ -11,6 +11,7 @@ def cli():
 
 @cli.command('list')
 def list_versions():
+    session = HTMLSession()
     r = session.get('https://mcversions.net/')
     server_links = r.html.find('.server')
     versions = list(map(lambda s: f"* {s.attrs['download']}", server_links))
@@ -20,6 +21,7 @@ def list_versions():
 @cli.command('download')
 @click.argument('version')
 def download_version(version):
+    session = HTMLSession()
     r = session.get('https://mcversions.net/')
     server_links = r.html.find('.server')
     download_link = list(filter(lambda s: s.attrs['download'] == version, server_links))[0].attrs['href'] # type: str    
