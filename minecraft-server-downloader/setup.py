@@ -9,9 +9,9 @@ setup(
     author_email='tethik@gmail.com',
     description='Simple CLI utility to download vanilla minecraft versions, with help from https://mcversions.net/.',
     url='https://github.com/Tethik/lame-cli-programs',
-    py_modules=['download'],
+    py_modules=['minecraft_server_downloader'],
     entry_points = {
-        'console_scripts': ['minecraft-server-downloader=download:main'],
+        'console_scripts': ['minecraft-server-downloader=minecraft_server_downloader:main'],
     },
     package_data={'': ['README.md']},
     include_package_data=True,
