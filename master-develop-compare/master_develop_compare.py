@@ -69,11 +69,13 @@ class GithubClient(object):
 @click.option('--threshold', default=1, help="Threshold amount of commits to display the repo in the list.")
 def main(match_filter, reset_token, threshold):
   """
-  Compares develop and master branches for github repositories to detect where a new release is needed.
+  Compares develop and master branches for your github repositories to detect where a new release is needed.
 
   MATCH_FILTER is a glob-like filter that decides which repositories should be included for the report. Repositories
   are listed by owner/name. E.g. wellnow-group/documentation. So to match on all wellnow-group repos, simply use
   the "wellnow*" pattern.
+
+  Requires a github OAuth token with the correct permissions (read repo, read org etc).
   """
   token = keyring.get_password('master-develop-compare', 'github')
   if not token or reset_token:

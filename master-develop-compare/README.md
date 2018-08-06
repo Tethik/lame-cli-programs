@@ -11,7 +11,7 @@ pip3 install -U --user "git+https://github.com/Tethik/lame-cli-programs#egg=mast
 ```
 Usage: master-develop-compare.py [OPTIONS] MATCH_FILTER
 
-  Compares develop and master branches for github repositories to detect
+  Compares develop and master branches for your github repositories to detect
   where a new release is needed.
 
   MATCH_FILTER is a glob-like filter that decides which repositories should
