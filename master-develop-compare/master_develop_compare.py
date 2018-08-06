@@ -94,7 +94,7 @@ def main(match_filter, reset_token, threshold):
         visited.add(repo)
 
   if not need_release:
-    click.secho("All repositories are up to date!", color="green")
+    click.secho(f"All {len(repos)} repositories are up to date!", color="green")
     return
 
   click.secho("The following repos are out of date:", color="blue")
