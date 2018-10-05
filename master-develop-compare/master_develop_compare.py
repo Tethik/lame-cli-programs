@@ -33,7 +33,8 @@ class GithubClient(object):
     """
     url = "https://api.github.com/graphql"
     resp = self.session.post(url, json={"query": query, "variables": []})
-    resp = resp.json()
+    resp.raise_for_status()
+    resp = resp.json()    
     names = [n["nameWithOwner"] for n in resp["data"]["viewer"]["repositories"]["nodes"]]
 
     for org in resp["data"]["viewer"]["organizations"]["nodes"]:
@@ -99,7 +100,7 @@ def main(match_filter, reset_token, threshold):
 
   click.secho("The following repos are out of date:", color="blue")
   for repo, ahead_by, info in sorted(need_release, key=lambda x: -x[1]):
-    click.echo(f"* {repo.ljust(50)} Commits Ahead: {ahead_by}")
+    click.echo(f" {repo.ljust(50)} Commits Ahead: {ahead_by}")
     for commit in info["commits"]:
       commit_summary = commit["commit"]["message"].split("\n")[0]
       click.echo(f'\t{crayons.blue(commit["sha"][:16])} {commit_summary}')
