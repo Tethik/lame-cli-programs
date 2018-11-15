@@ -35,7 +35,7 @@ def cli(ctx):
 
 @cli.command()
 @click.option('--circleci', default=False, is_flag=True)
-def init(circleci):
+def init(circleci=False):
     template = CIRCLECI_TEMPLATE if circleci else TEMPLATE
     Path(FILENAME).write_text(template.strip())
     click.secho('Wrote sample {FILENAME} file'.format(FILENAME=FILENAME), color="blue")
