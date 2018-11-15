@@ -65,9 +65,9 @@ def tag_names(ctx, image_name):
         'git_branch': git_branch(),
         'git_latest_version_tag': git_latest_version_tag()
     }
-    print(ctx.obj['git_branch'])
+    print(extras['git_branch'])
     for branch_name_pattern, tags in ctx.obj['config'].items():
-        if re.match(branch_name_pattern, ctx.obj['git_branch']):
+        if re.match(branch_name_pattern, extras['git_branch']):
             return ["{image_name}:{tag_name_text}".format(image_name=image_name, tag_name_text=tag_name(template, extras)) for template in tags]
 
 
