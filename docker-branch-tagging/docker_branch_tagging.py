@@ -8,6 +8,14 @@ import click
 
 TEMPLATE = """
 {
+    "develop": ["latest","{git_branch}"],
+    "feature/(.+)": ["{git_branch}"],
+    "master": ["master","{git_latest_version_tag}"]
+}
+"""
+
+CIRCLECI_TEMPLATE = """
+{
     "develop": ["latest","develop-{CIRCLE_BUILD_NUM}","{git_branch}"],
     "feature/(.+)": ["{git_branch}"],
     "master": ["master","master-{CIRCLE_BUILD_NUM}","{git_latest_version_tag}"]
@@ -24,17 +32,12 @@ def cli(ctx):
         init.invoke(ctx)
 
     ctx.obj['config'] = json.loads(f.read_text())
-    ctx.obj['git_branch'] = git_branch()
-    ctx.obj['git_latest_version_tag'] = 'unknown_version'
-    try:
-        ctx.obj['git_latest_version_tag'] =  git_latest_version_tag()
-    except:
-        pass
-
 
 @cli.command()
-def init():
-    Path(FILENAME).write_text(TEMPLATE.strip())
+@click.option('--circleci', default=False, is_flag=True)
+def init(circleci=False):
+    template = CIRCLECI_TEMPLATE if circleci else TEMPLATE
+    Path(FILENAME).write_text(template.strip())
     click.secho('Wrote sample {FILENAME} file'.format(FILENAME=FILENAME), color="blue")
 
 
@@ -50,26 +53,30 @@ def git_branch():
 
 
 def git_latest_version_tag():
-    cmd = 'git describe --abbrev=0 --match=[0-9]*.[0-9]*.[0-9]*'
-    return subprocess.check_output([cmd], shell=True).decode('utf-8').strip()
+    try:
+        cmd = 'git describe --abbrev=0 --match=[0-9]*.[0-9]*.[0-9]*'
+        return subprocess.check_output([cmd], shell=True).decode('utf-8').strip()
+    except:
+        return 'unknown_version'
 
 
 def tag_names(ctx, image_name):
     extras = {
-        'git_branch': ctx.obj['git_branch'],
-        'git_latest_version_tag': ctx.obj['git_latest_version_tag']
+        'git_branch': git_branch(),
+        'git_latest_version_tag': git_latest_version_tag()
     }
-    print(ctx.obj['git_branch'])
+    print(extras['git_branch'])
     for branch_name_pattern, tags in ctx.obj['config'].items():
-        if re.match(branch_name_pattern, ctx.obj['git_branch']):
+        if re.match(branch_name_pattern, extras['git_branch']):
             return ["{image_name}:{tag_name_text}".format(image_name=image_name, tag_name_text=tag_name(template, extras)) for template in tags]
 
 
 @cli.command()
 @click.argument('image_name')
 @click.option('--dockerfile')
+@click.option('--build-arg', multiple=True)
 @click.pass_context
-def build(ctx, image_name, dockerfile=None):
+def build(ctx, image_name, dockerfile=None, build_arg=None):
     tags = tag_names(ctx, image_name)
     if not tags:
         print("No build needed.")
@@ -81,7 +88,11 @@ def build(ctx, image_name, dockerfile=None):
         dockerfile = ""
 
     tag_text = " -t ".join(tags)
-    cmd = 'docker build {dockerfile} -t {tag_text} .'.format(dockerfile=dockerfile, tag_text=tag_text)
+    options = ["-t {tag_text}".format(tag_text=tag_text)]
+    if build_arg:
+        for b in build_arg:
+            options.append("--build-arg {b}".format(b=b))
+    cmd = 'docker build {dockerfile} {options} .'.format(dockerfile=dockerfile, options=" ".join(options))
     print(cmd)
     r = os.system(cmd)
     if r != 0:

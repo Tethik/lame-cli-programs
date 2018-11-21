@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='docker-branch-tagging',
-    version='0.0.1',
+    version='0.1.0',
     author='Joakim Uddholm',
     author_email='tethik@gmail.com',
     description='Utility tool to help you give your docker images multiple tags based on the current git branch.',
