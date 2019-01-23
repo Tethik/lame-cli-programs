@@ -2,6 +2,7 @@ import nomad
 from terminaltables import AsciiTable, SingleTable
 import click
 import re
+import pdb
 
 n = nomad.Nomad()
 
@@ -18,6 +19,10 @@ def main(filter):
     with click.progressbar(n.allocations, label="Fetching stats") as allocations:
         for allocation in allocations:
             allocation = n.allocation.get_allocation(allocation["ID"])
+            if allocation["ClientStatus"] != "running":
+                continue
+            # print(allocation)
+            # pdb.set_trace()
             job = allocation["Job"]
             name = job["Name"]
             if filterPattern and not filterPattern.search(name):
