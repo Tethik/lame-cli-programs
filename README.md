@@ -6,7 +6,7 @@ to be installable into a typical UNIX OS.
 * `vaultauth` : Script that returns a fresh vault token
 
 ## Mac OS
-Trouble running these scripts once installed? Try adding the following directory to your `$PATH`.
+For the lesser Unix users who sometimes struggle a bit. Trouble running these scripts once installed? Try adding the following directory to your `$PATH`.
 ```
 /Users/<you>/Library/Python/3.6/bin
 ```
