@@ -9,7 +9,7 @@ setup(
     author_email='tethik@gmail.com',
     description='Linux service to monitor and automatically shut down a Minecraft EC2 instance',
     url='https://github.com/Tethik/lame-cli-programs',
-    py_modules=['minecraft_server_downloader'],
+    py_modules=['minecraft_ec2_auto_shutdown'],
     entry_points = {
         'console_scripts': ['minecraft-ec2-auto-shutdown=minecraft_ec2_auto_shutdown:main'],
     },
