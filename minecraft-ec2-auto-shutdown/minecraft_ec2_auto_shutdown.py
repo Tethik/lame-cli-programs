@@ -24,7 +24,10 @@ def check_players_online(host: str, port: int) -> bool:
         
 
 def commit_sudoku():    
-    ec2 = boto3.client('ec2')    
+    session = boto3.Session(        
+        region_name=ec2_metadata.region
+    )
+    ec2 = session.client('ec2')    
     print("Committing sudoku!")
     ec2.stop_instances(InstanceIds=[ec2_metadata.instance_id])    
 
@@ -50,24 +53,29 @@ TIME_THRESHOLD = timedelta(minutes=30)
 
 
 def main():
-    host = "127.0.0.1"
+    host = "3.125.216.121"
     port = 25565    
 
     should_commit_sudoku = False
     last_run = load_date("last_run")
     last_online = load_date("last_online")
+
+    if not last_online: # handle case where player was never seen yet by setting a value to last_online to the current time.
+        save_date("last_online")
+        last_online = datetime.now()
+
     now = datetime.now()
     currently_online = check_players_online(host, port)
 
     if currently_online:
         save_date("last_online")        
     else:        
-        should_commit_sudoku = (last_run and last_run + TIME_THRESHOLD >= now) and (not last_online or last_online + TIME_THRESHOLD < now)
+        should_commit_sudoku = (last_run and last_run + TIME_THRESHOLD >= now) and (last_online + TIME_THRESHOLD < now)
     save_date("last_run")
     
     if should_commit_sudoku:
         commit_sudoku()
-    elif not currently_online and last_online:
+    else:
         diff = now - last_online
         mins = diff.total_seconds() // 60
         print(f"Last player was seen {mins} minutes ago. Shutting down in {30 - mins} minutes.")
