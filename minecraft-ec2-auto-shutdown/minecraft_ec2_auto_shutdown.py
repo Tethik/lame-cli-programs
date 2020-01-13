@@ -5,21 +5,16 @@ from ec2_metadata import ec2_metadata
 import os
 from datetime import datetime, timedelta
 from pathlib import Path
-import signal
+
 
 NAME = 'minecraft-ec2-auto-shutdown'
+TIME_THRESHOLD = timedelta(minutes=30)
+
 
 def check_players_online(host: str, port: int) -> bool:
-    def _timeout_handler(signum, frame):
-        raise Exception("Minecraft server did not reply in time")
-
-    signal.signal(signal.SIGALRM, _timeout_handler)
-
-    signal.alarm(1) # Should be instant since the server is at localhost
-    with Client(host, port) as client:
+    with Client(host, port, timeout=1) as client:
         print(client.basic_stats)
         print(f"{client.basic_stats.num_players} player(s) are online")
-        signal.alarm(0)
         return client.basic_stats.num_players > 0
         
 
@@ -48,9 +43,6 @@ def load_date(name: str):
         return datetime.fromtimestamp(float(text))
     except:
         return None
-
-TIME_THRESHOLD = timedelta(minutes=30)
-
 
 def main():
     host = "127.0.0.1"
