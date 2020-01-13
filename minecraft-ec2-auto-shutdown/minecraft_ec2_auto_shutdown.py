@@ -62,7 +62,7 @@ def main():
     if currently_online:
         save_date("last_online")        
     else:        
-        should_commit_sudoku = (last_run and last_run + TIME_THRESHOLD >= now) and (last_online and last_online + TIME_THRESHOLD < now)
+        should_commit_sudoku = (last_run and last_run + TIME_THRESHOLD >= now) and (not last_online or last_online + TIME_THRESHOLD < now)
     save_date("last_run")
     
     if should_commit_sudoku:
